@@ -39,3 +39,32 @@ export const SOCIAL_LINKS = {
   linkedin: "https://www.linkedin.com/in/akash-chandra-paul-24-online",
   x: "https://x.com/",
 } as const;
+
+// Where users land after logging in (will become "/dashboard" in a later step)
+export const AFTER_LOGIN_PATH = "/";
+
+export const ROLE_OPTIONS = [
+  {
+    value: "customer",
+    label: "Customer",
+    description: "Browse and rent equipment.",
+  },
+  {
+    value: "owner",
+    label: "Owner",
+    description: "List equipment for rent. Needs approval.",
+  },
+  {
+    value: "admin",
+    label: "Admin",
+    description: "Manage the platform. Needs approval.",
+  },
+] as const;
+
+export const MAX_UPLOAD_BYTES = 2 * 1024 * 1024;
+export const ALLOWED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+] as const;
