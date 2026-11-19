@@ -5,6 +5,7 @@ import { SITE_NAME, SITE_TAGLINE } from "@/lib/constants";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Toaster from "@/components/ui/Toaster";
+import SocialAuthToast from "@/components/auth/SocialAuthToast";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -30,6 +31,7 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
         <Footer />
         <Toaster />
+        <SocialAuthToast />
       </body>
     </html>
   );
