@@ -1,33 +1,33 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-/* Light theme (default) */
+/* Light theme (default): orange, bronze and brushed steel */
 @plugin "daisyui/theme" {
-  name: "gearly";
+  name: "rentgear";
   default: true;
   prefersdark: false;
   color-scheme: light;
 
-  --color-base-100: #ffffff;
-  --color-base-200: #f4f6fa;
-  --color-base-300: #e2e7ef;
-  --color-base-content: #111827;
+  --color-base-100: #fbfbfc;
+  --color-base-200: #f1f2f4;
+  --color-base-300: #dde0e4;
+  --color-base-content: #1f2329;
 
-  --color-primary: #1d4ed8;
-  --color-primary-content: #ffffff;
-  --color-secondary: #f59e0b;
-  --color-secondary-content: #1c1407;
-  --color-accent: #6366f1;
+  --color-primary: #f28c0f;
+  --color-primary-content: #1b1203;
+  --color-secondary: #8a5a3c;
+  --color-secondary-content: #ffffff;
+  --color-accent: #5b6572;
   --color-accent-content: #ffffff;
-  --color-neutral: #0f172a;
-  --color-neutral-content: #e2e8f0;
+  --color-neutral: #23272e;
+  --color-neutral-content: #d5d9de;
 
-  --color-info: #0284c7;
+  --color-info: #0369a1;
   --color-info-content: #ffffff;
-  --color-success: #16a34a;
+  --color-success: #15803d;
   --color-success-content: #ffffff;
-  --color-warning: #f59e0b;
-  --color-warning-content: #1c1407;
+  --color-warning: #ca8a04;
+  --color-warning-content: #1b1203;
   --color-error: #dc2626;
   --color-error-content: #ffffff;
 
@@ -43,31 +43,31 @@
 
 /* Dark theme (used automatically when the device prefers dark) */
 @plugin "daisyui/theme" {
-  name: "gearly-dark";
+  name: "rentgear-dark";
   default: false;
   prefersdark: true;
   color-scheme: dark;
 
-  --color-base-100: #0b1220;
-  --color-base-200: #0f172a;
-  --color-base-300: #1e293b;
-  --color-base-content: #e5e7eb;
+  --color-base-100: #14171c;
+  --color-base-200: #1a1e24;
+  --color-base-300: #262b33;
+  --color-base-content: #e8eaed;
 
-  --color-primary: #3b82f6;
-  --color-primary-content: #ffffff;
-  --color-secondary: #fbbf24;
-  --color-secondary-content: #1c1407;
-  --color-accent: #818cf8;
-  --color-accent-content: #0b1220;
-  --color-neutral: #1e293b;
-  --color-neutral-content: #e2e8f0;
+  --color-primary: #f5a524;
+  --color-primary-content: #1b1203;
+  --color-secondary: #c58f66;
+  --color-secondary-content: #1a120b;
+  --color-accent: #9aa3ae;
+  --color-accent-content: #14171c;
+  --color-neutral: #0e1115;
+  --color-neutral-content: #d5d9de;
 
   --color-info: #38bdf8;
   --color-info-content: #0b1220;
   --color-success: #4ade80;
   --color-success-content: #0b1220;
-  --color-warning: #fbbf24;
-  --color-warning-content: #1c1407;
+  --color-warning: #facc15;
+  --color-warning-content: #1b1203;
   --color-error: #f87171;
   --color-error-content: #0b1220;
 
