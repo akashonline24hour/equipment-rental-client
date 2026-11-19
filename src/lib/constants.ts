@@ -1,4 +1,4 @@
-export const SITE_NAME = "Gearly";
+export const SITE_NAME = "RentGear";
 export const SITE_TAGLINE = "Rent the right equipment, right when you need it.";
 
 export const CATEGORIES = [
@@ -17,3 +17,25 @@ export const ROLES = ["customer", "owner", "admin"] as const;
 export type Category = (typeof CATEGORIES)[number];
 export type RentalType = (typeof RENTAL_TYPES)[number];
 export type Role = (typeof ROLES)[number];
+
+export const NAV_LINKS = [
+  { label: "Home", href: "/" },
+  { label: "All Equipment", href: "/equipment" },
+  { label: "How It Works", href: "/how-it-works" },
+  { label: "About Us", href: "/about" },
+  { label: "Contact Us", href: "/contact" },
+] as const;
+
+// Placeholder contact details. Replace them with real ones.
+export const CONTACT = {
+  email: "support@rentgear.example",
+  phone: "+880 1700-000000",
+  address: "Gulshan Avenue, Dhaka, Bangladesh",
+} as const;
+
+// Replace the X address with your own profile, or remove that entry.
+export const SOCIAL_LINKS = {
+  github: "https://github.com/akashonline24hour",
+  linkedin: "https://www.linkedin.com/in/akash-chandra-paul-24-online",
+  x: "https://x.com/",
+} as const;
