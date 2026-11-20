@@ -2,14 +2,22 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { LayoutDashboard, LogOut, Menu, X } from "lucide-react";
+import { toast } from "react-toastify";
+import { authClient } from "@/lib/auth-client";
 import { NAV_LINKS, SITE_NAME } from "@/lib/constants";
+import UserAvatar from "@/components/layout/UserAvatar";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { data: session, isPending } = authClient.useSession();
+  const user = session?.user;
+
   const [open, setOpen] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -20,6 +28,22 @@ export default function Navbar() {
         ? "bg-primary/15 text-base-content"
         : "text-base-content/70 hover:bg-base-200 hover:text-base-content"
     }`;
+
+  async function handleLogout() {
+    setLoggingOut(true);
+    const { error } = await authClient.signOut();
+    setLoggingOut(false);
+
+    if (error) {
+      toast.error(error.message || "Could not log out. Please try again.");
+      return;
+    }
+
+    setOpen(false);
+    toast.success("Logged out successfully");
+    router.replace("/");
+    router.refresh();
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-base-300 bg-base-100/90 backdrop-blur">
@@ -61,14 +85,42 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Desktop auth buttons (Step 1 swaps these for Dashboard and Logout when logged in) */}
+        {/* Desktop auth area */}
         <div className="hidden items-center gap-2 lg:flex">
-          <Link href="/login" className="btn btn-ghost btn-sm">
-            Login
-          </Link>
-          <Link href="/register" className="btn btn-primary btn-sm">
-            Register
-          </Link>
+          {isPending ? (
+            <div className="skeleton h-9 w-44 rounded-lg" />
+          ) : user ? (
+            <>
+              <UserAvatar
+                key={user.image ?? "no-photo"}
+                name={user.name}
+                image={user.image}
+              />
+              <span className="badge badge-outline badge-sm capitalize">
+                {user.role}
+              </span>
+              <Link href="/dashboard" className="btn btn-ghost btn-sm">
+                <LayoutDashboard size={16} /> Dashboard
+              </Link>
+              <button
+                type="button"
+                className="btn btn-outline btn-sm"
+                onClick={handleLogout}
+                disabled={loggingOut}
+              >
+                <LogOut size={16} /> Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="btn btn-ghost btn-sm">
+                Login
+              </Link>
+              <Link href="/register" className="btn btn-primary btn-sm">
+                Register
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile menu button */}
@@ -104,21 +156,61 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
-          <div className="mx-auto grid max-w-7xl grid-cols-2 gap-3 px-4 pb-5 sm:px-6">
-            <Link
-              href="/login"
-              className="btn btn-outline btn-sm"
-              onClick={() => setOpen(false)}
-            >
-              Login
-            </Link>
-            <Link
-              href="/register"
-              className="btn btn-primary btn-sm"
-              onClick={() => setOpen(false)}
-            >
-              Register
-            </Link>
+
+          <div className="mx-auto max-w-7xl px-4 pb-5 sm:px-6">
+            {isPending ? (
+              <div className="skeleton h-9 w-full rounded-lg" />
+            ) : user ? (
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <UserAvatar
+                    key={user.image ?? "no-photo"}
+                    name={user.name}
+                    image={user.image}
+                  />
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-bold">{user.name}</p>
+                    <p className="truncate text-xs text-base-content/60 capitalize">
+                      {user.role}
+                    </p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <Link
+                    href="/dashboard"
+                    className="btn btn-primary btn-sm"
+                    onClick={() => setOpen(false)}
+                  >
+                    <LayoutDashboard size={16} /> Dashboard
+                  </Link>
+                  <button
+                    type="button"
+                    className="btn btn-outline btn-sm"
+                    onClick={handleLogout}
+                    disabled={loggingOut}
+                  >
+                    <LogOut size={16} /> Logout
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-3">
+                <Link
+                  href="/login"
+                  className="btn btn-outline btn-sm"
+                  onClick={() => setOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/register"
+                  className="btn btn-primary btn-sm"
+                  onClick={() => setOpen(false)}
+                >
+                  Register
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       )}
