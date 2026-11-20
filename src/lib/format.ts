@@ -17,3 +17,10 @@ export function formatDate(value: string | Date | null | undefined): string {
     year: "numeric",
   });
 }
+
+// Used to show prices like "$45.00 / day"
+export const RENTAL_UNIT: Record<string, string> = {
+  Daily: "day",
+  Weekly: "week",
+  Monthly: "month",
+};
