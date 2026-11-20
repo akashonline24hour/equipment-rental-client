@@ -68,3 +68,6 @@ export const ALLOWED_IMAGE_TYPES = [
   "image/webp",
   "image/gif",
 ] as const;
+
+export const CONDITIONS = ["New", "Like New", "Good", "Fair"] as const;
+export type Condition = (typeof CONDITIONS)[number];
