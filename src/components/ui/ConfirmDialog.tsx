@@ -5,6 +5,7 @@ export default function ConfirmDialog({
   title,
   message,
   confirmLabel = "Delete",
+  tone = "danger",
   loading = false,
   onConfirm,
   onCancel,
@@ -13,6 +14,7 @@ export default function ConfirmDialog({
   title: string;
   message: string;
   confirmLabel?: string;
+  tone?: "danger" | "primary";
   loading?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
@@ -42,7 +44,7 @@ export default function ConfirmDialog({
           </button>
           <button
             type="button"
-            className="btn btn-error"
+            className={`btn ${tone === "danger" ? "btn-error" : "btn-primary"}`}
             onClick={onConfirm}
             disabled={loading}
           >
