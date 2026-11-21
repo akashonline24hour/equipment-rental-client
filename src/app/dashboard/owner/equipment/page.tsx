@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PlusCircle } from "lucide-react";
-import MyEquipmentTable from "@/components/dashboard/MyEquipmentTable";
+import MyEquipmentList from "@/components/dashboard/MyEquipmentList";
 import PageHeader from "@/components/dashboard/PageHeader";
 
 export const metadata: Metadata = { title: "My Equipment" };
@@ -21,7 +21,7 @@ export default function MyEquipmentPage() {
           </Link>
         }
       />
-      <MyEquipmentTable />
+      <MyEquipmentList />
     </>
   );
 }
