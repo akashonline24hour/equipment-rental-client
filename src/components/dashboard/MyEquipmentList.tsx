@@ -98,7 +98,10 @@ function EquipmentRow({
           / {RENTAL_UNIT[item.rentalType] ?? item.rentalType}
         </span>
       </td>
-      <td className="text-sm">{item.quantity}</td>
+      <td className="text-sm">
+        {item.availableQuantity ?? item.quantity}{" "}
+        <span className="text-base-content/50">/ {item.quantity}</span>
+      </td>
       <td>
         <StatusBadge status={item.status} />
         {item.status === "rejected" && (
