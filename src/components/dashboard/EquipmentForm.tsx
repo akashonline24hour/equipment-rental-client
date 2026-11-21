@@ -12,9 +12,11 @@ import type { Equipment } from "@/types/equipment";
 import ImageField from "@/components/ui/ImageField";
 import StatusBadge from "@/components/ui/StatusBadge";
 
-type Props = { mode: "add" } | { mode: "edit"; equipment: Equipment };
+type Props =
+  | { mode: "add"; backHref?: string }
+  | { mode: "edit"; equipment: Equipment; backHref?: string };
 
-const BACK_HREF = "/dashboard/owner/equipment";
+const DEFAULT_BACK_HREF = "/dashboard/owner/equipment";
 
 // Defined outside the form so React doesn't recreate it on every render
 function Field({
@@ -40,6 +42,7 @@ export default function EquipmentForm(props: Props) {
   const router = useRouter();
   const { data: session } = authClient.useSession();
   const equipment = props.mode === "edit" ? props.equipment : undefined;
+  const backHref = props.backHref ?? DEFAULT_BACK_HREF;
 
   const [name, setName] = useState(equipment?.name ?? "");
   const [description, setDescription] = useState(equipment?.description ?? "");
@@ -147,7 +150,7 @@ export default function EquipmentForm(props: Props) {
             );
 
       toast.success(result.message);
-      router.push(BACK_HREF);
+      router.push(backHref);
       router.refresh();
     } catch (error) {
       if (error instanceof ApiError && error.status === 401) {
@@ -361,7 +364,7 @@ export default function EquipmentForm(props: Props) {
       </div>
 
       <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-        <Link href={BACK_HREF} className="btn btn-ghost">
+        <Link href={backHref} className="btn btn-ghost">
           Cancel
         </Link>
         <button
