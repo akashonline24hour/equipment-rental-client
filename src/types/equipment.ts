@@ -11,6 +11,7 @@ export interface Equipment {
   price: number;
   rentalType: RentalType;
   quantity: number;
+  availableQuantity?: number;
   condition: Condition;
   brand: string;
   model: string;
@@ -24,4 +25,18 @@ export interface Equipment {
   ownerPhone: string;
   createdAt: string;
   updatedAt: string;
+}
+
+// What the public endpoints return (no owner contact details or terms)
+export type PublicEquipment = Omit<
+  Equipment,
+  "ownerId" | "ownerEmail" | "ownerPhone" | "terms"
+>;
+
+export interface EquipmentPage {
+  items: PublicEquipment[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
 }
