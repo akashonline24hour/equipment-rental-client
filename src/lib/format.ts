@@ -24,3 +24,16 @@ export const RENTAL_UNIT: Record<string, string> = {
   Weekly: "week",
   Monthly: "month",
 };
+
+// For dates stored as midnight UTC, such as the first and last day of a rental
+export function formatDay(value: string | Date | null | undefined): string {
+  if (!value) return "-";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "-";
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
