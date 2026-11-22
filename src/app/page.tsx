@@ -1,38 +1,36 @@
-import { CATEGORIES, SITE_NAME } from "@/lib/constants";
+import CategoriesSection from "@/components/home/CategoriesSection";
+import FeaturedSection from "@/components/home/FeaturedSection";
+import HeroBanner from "@/components/home/HeroBanner";
+import HowItWorks from "@/components/home/HowItWorks";
+import ReviewsSection from "@/components/home/ReviewsSection";
+import TrustedOwners from "@/components/home/TrustedOwners";
+import WhyChooseUs from "@/components/home/WhyChooseUs";
+import { publicFetch } from "@/lib/public-api";
+import type { PublicEquipment } from "@/types/equipment";
+import type { CategoryCount, Review, TopOwner } from "@/types/home";
 
-export default function HomePage() {
+function valueOrEmpty<T>(result: PromiseSettledResult<T[]>): T[] {
+  return result.status === "fulfilled" ? result.value : [];
+}
+
+export default async function HomePage() {
+  // If the server is down, the page still loads with empty sections
+  const [featured, categories, reviews, owners] = await Promise.allSettled([
+    publicFetch<PublicEquipment[]>("/equipment/featured"),
+    publicFetch<CategoryCount[]>("/equipment/categories"),
+    publicFetch<Review[]>("/reviews"),
+    publicFetch<TopOwner[]>("/equipment/owners"),
+  ]);
+
   return (
-    <main className="mx-auto max-w-5xl space-y-10 px-4 py-16">
-      <div className="space-y-3">
-        <span className="badge badge-secondary">Theme check</span>
-        <h1 className="text-4xl font-extrabold tracking-tight">{SITE_NAME}</h1>
-        <p className="text-base-content/70">
-          If you can see colors, rounded cards and buttons below, Tailwind and
-          DaisyUI are working.
-        </p>
-      </div>
-
-      <div className="flex flex-wrap gap-3">
-        <button className="btn btn-primary">Primary</button>
-        <button className="btn btn-secondary">Secondary</button>
-        <button className="btn btn-accent">Accent</button>
-        <button className="btn btn-outline">Outline</button>
-        <span className="badge badge-success">Success</span>
-        <span className="badge badge-error">Error</span>
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {CATEGORIES.map((name) => (
-          <div key={name} className="card bg-base-200 shadow-sm">
-            <div className="card-body">
-              <h2 className="card-title text-base">{name}</h2>
-              <p className="text-sm text-base-content/70">
-                Sample category card
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </main>
+    <>
+      <HeroBanner />
+      <FeaturedSection items={valueOrEmpty(featured)} />
+      <CategoriesSection counts={valueOrEmpty(categories)} />
+      <WhyChooseUs />
+      <ReviewsSection reviews={valueOrEmpty(reviews)} />
+      <HowItWorks />
+      <TrustedOwners owners={valueOrEmpty(owners)} />
+    </>
   );
 }
