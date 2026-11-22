@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { CalendarCheck, Heart } from "lucide-react";
-import { toast } from "react-toastify";
+import { useState } from "react";
+import { CalendarCheck } from "lucide-react";
+import BookingModal from "@/components/equipment/BookingModal";
+import FavoriteButton from "@/components/equipment/FavoriteButton";
 import { availableUnits } from "@/lib/equipment";
 import type { Equipment } from "@/types/equipment";
 
@@ -15,6 +17,8 @@ export default function DetailsActions({
   role?: string | null;
   isOwnItem: boolean;
 }) {
+  const [bookingOpen, setBookingOpen] = useState(false);
+
   // Only approved listings can be rented
   if (item.status !== "approved") {
     return (
@@ -52,25 +56,23 @@ export default function DetailsActions({
 
   return (
     <div className="space-y-3">
-      {/* Step 7 opens the booking modal here */}
       <button
         type="button"
         className="btn btn-primary btn-lg w-full"
         disabled={units <= 0}
-        onClick={() => toast.info("Booking is added in the next steps")}
+        onClick={() => setBookingOpen(true)}
       >
         <CalendarCheck size={18} />
         {units > 0 ? "Book now" : "Currently unavailable"}
       </button>
 
-      {/* Step 6 saves favorites here */}
-      <button
-        type="button"
-        className="btn btn-outline w-full"
-        onClick={() => toast.info("Favorites are added in the next steps")}
-      >
-        <Heart size={18} /> Add to favorites
-      </button>
+      <FavoriteButton equipmentId={item._id} />
+
+      <BookingModal
+        item={item}
+        open={bookingOpen}
+        onClose={() => setBookingOpen(false)}
+      />
     </div>
   );
 }
