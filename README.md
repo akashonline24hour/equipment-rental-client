@@ -1,92 +1,163 @@
-# RentGear — Equipment Rental Platform (Client)
+# RentGear: Equipment Rental Platform
 
-A modern, full-stack **Equipment Rental Platform** built with **Next.js (App Router)**, **TypeScript**, **Tailwind CSS**, and **DaisyUI**. RentGear connects equipment owners with customers through a transparent, role-based rental marketplace featuring server-side search and filtering, Stripe online checkout, interactive analytics dashboards, and persistent Light/Dark theming.
+RentGear is a rental marketplace where **equipment owners** list their equipment and **customers** browse, book and pay for it online for a specific period. An **admin** reviews every listing, manages users and monitors all rentals.
 
-- **Live Site:** [https://equipment-rental-client-rho.vercel.app](https://equipment-rental-client-rho.vercel.app)
-- **Client Repository:** [https://github.com/akashonline24hour/equipment-rental-client](https://github.com/akashonline24hour/equipment-rental-client)
-- **Server Repository:** [https://github.com/akashonline24hour/equipment-rental-server](https://github.com/akashonline24hour/equipment-rental-server)
+|                          |                                                              |
+| ------------------------ | ------------------------------------------------------------ |
+| 🌐 **Live site**         | https://equipment-rental-client-rho.vercel.app               |
+| 💻 **Client repository** | https://github.com/akashonline24hour/equipment-rental-client |
+| ⚙️ **Server repository** | https://github.com/akashonline24hour/equipment-rental-server |
+| 🔌 **Live API**          | https://equipment-rental-server-lake.vercel.app              |
 
----
-
-## Key Features
-
-### Public Experience & Discovery
-- **Responsive Home Page:** Animated hero banner, featured approved equipment showcase (6 items), popular categories, "Why Choose Us" value propositions, customer reviews, and additional discovery sections powered by **Framer Motion**.
-- **All Equipment Catalog:** 3-column responsive grid with **backend-powered search** (by equipment name or location), multi-criteria **filtering** (category, rental type, price range, availability), **sorting** (price low-to-high, high-to-low, recently added), and pagination.
-- **Custom Light & Dark Theme:** Persistent `rentgear` (Light) and `rentgear-dark` (Dark) DaisyUI themes saved in `localStorage` with instant toggling from the navigation bar.
-
-### Authentication & Role-Based Access Control (RBAC)
-- **BetterAuth + JWT Integration:** Email/password registration and login with uppercase/lowercase/length validation, plus **Google & GitHub OAuth** social login (defaulting new social accounts to the `customer` role).
-- **Protected Routes & Middleware:** Next.js route protection and role guards separating **Customer**, **Owner**, and **Admin** experiences across reloads without unwanted login redirects.
-
-### Booking & Stripe Checkout Flow
-- **Equipment Details (Private):** Full equipment specifications, owner info, rental terms, availability count, and **Favorites** management.
-- **Interactive Booking Modal:** Date range selection, quantity validation, contact/delivery details, automatic rental cost calculation, and real-time availability checks.
-- **Stripe Payment Integration:** Seamless redirect to Stripe Checkout upon booking confirmation, followed by automated payment verification and booking record creation.
-
-### Role-Specific Dashboards
-- **Customer Dashboard:** View rental booking history and payment statuses (`My Rentals`), manage saved items (`Favorites`), and update personal profile details (`Profile`).
-- **Owner Dashboard:** List new equipment with **ImgBB** image uploads (`Add Equipment`), manage inventory (`My Equipment`), track incoming rentals (`My Equipment Rental`), view business analytics charts, and edit profile info.
-- **Admin Dashboard:** Monitor platform-wide KPIs and revenue charts, manage user roles (`All Users`), approve/reject/manage listings (`All Equipment`), and oversee all transactions (`All Rentals`).
+> The admin email and password are provided in the assignment submission form.
 
 ---
 
-## Tech Stack & NPM Packages
+## ✨ Key Features
 
-- **Framework & Language:** `next` (App Router), `react`, `react-dom`, `typescript`
-- **Styling & UI:** `tailwindcss`, `daisyui`, `lucide-react`, `react-icons`
-- **Animations & Feedback:** `framer-motion`, `react-toastify`
-- **Authentication & Database Adapter:** `better-auth`, `mongodb`
-- **Data Visualization & Payments:** Charting library for Owner/Admin analytics, `@stripe/stripe-js` / Stripe Checkout integration
+**For everyone**
+
+- A home page with an animated banner, featured equipment, categories, why choose us, customer reviews, how it works and trusted owners (Framer Motion).
+- An **All Equipment** page with **server-side** search (name, category, brand, location), filters (category, rental type, price range, availability), sorting and pagination.
+- Light and dark themes that follow the device setting, a responsive layout, and custom loading, error and 404 pages.
+
+**Authentication and security**
+
+- Email and password registration with a name, a photo (link or image upload) and password rules (an uppercase letter, a lowercase letter and at least 6 characters), plus **Google** and **GitHub** login. Success and error messages appear as toasts.
+- Every new account starts as a **customer**. Choosing **owner** or **admin** at registration sends a request that an admin must approve.
+- **JWT** authentication: the client gets a short-lived token from Better Auth and sends it to the API, which verifies it.
+- **Role-based access control** for customers, owners and admins, with private routes protected in `proxy.ts`. A logged-in user stays on a private page when it is reloaded.
+
+**Customers**
+
+- A private equipment details page with the full description, specifications, rental terms and owner information.
+- **Favorites**: add and remove equipment, saved in the database.
+- A **booking modal** with start and end date, quantity, contact number, delivery address and notes, a live total and an availability check.
+- **Stripe Checkout** payment, a payment success page, and a booking and payment record created after the payment succeeds.
+- Dashboard: My Rentals, Favorites and Profile.
+
+**Owners**
+
+- Add equipment with an image upload (imgbb). New listings start as **pending**.
+- My Equipment with search, status filters, update, delete and view, and a table that becomes cards on phones.
+- My Equipment Rental (rentals of their equipment) and a profile page.
+
+**Admins**
+
+- All Users: change roles, approve or reject owner and admin requests, and block or unblock users.
+- All Equipment: approve, reject, update and delete any listing.
+- All Rentals: monitor every rental and payment, and a profile page.
 
 ---
 
-## Environment Variables
+## 🧰 Tech Stack and npm Packages
 
-Create a `.env.local` file in the root of `equipment-rental-client` and configure the following variables:
+| Package                        | Purpose                                                                     |
+| ------------------------------ | --------------------------------------------------------------------------- |
+| `next` (16, App Router)        | Framework, routing, server components, `proxy.ts` route protection          |
+| `react`, `react-dom`           | UI library                                                                  |
+| `typescript`                   | Type safety                                                                 |
+| `tailwindcss`                  | Styling                                                                     |
+| `daisyui`                      | UI component library and the light and dark themes                          |
+| `better-auth`                  | Authentication: email and password, Google and GitHub, sessions, JWT plugin |
+| `mongodb`                      | MongoDB driver used by Better Auth's database adapter                       |
+| `framer-motion`                | Home page animations                                                        |
+| `lucide-react`, `react-icons`  | Icons                                                                       |
+| `react-toastify`               | Success and error toasts                                                    |
+| `recharts`                     | Charts on the dashboards                                                    |
+| `eslint`, `eslint-config-next` | Linting                                                                     |
+
+**Services:** MongoDB Atlas (database), Stripe (payments, test mode), imgbb (image upload), Vercel (hosting).
+
+---
+
+## 🗺️ Pages
+
+| Route                                 | Access                                        |
+| ------------------------------------- | --------------------------------------------- |
+| `/`                                   | Public                                        |
+| `/equipment`                          | Public (search, filters, sorting, pagination) |
+| `/equipment/[id]`                     | Private (logged-in users)                     |
+| `/login`, `/register`                 | Logged-out users only                         |
+| `/payment/success`, `/payment/cancel` | Private                                       |
+| `/dashboard` and its sections         | Private, by role (customer, owner or admin)   |
+
+---
+
+## 🚀 Run It Locally
+
+**Requirements:** Node.js 20.9 or newer, a MongoDB database, and the [server](https://github.com/akashonline24hour/equipment-rental-server) running.
+
+```bash
+git clone https://github.com/akashonline24hour/equipment-rental-client.git
+cd equipment-rental-client
+npm install
+```
+
+Create a `.env.local` file in the project root (never commit it):
 
 ```env
-# Public App & API URLs
+# App
 NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXT_PUBLIC_API_URL=http://localhost:5000
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
 
-# BetterAuth & Database
-BETTER_AUTH_URL=http://localhost:3000
-BETTER_AUTH_SECRET=your_32_character_minimum_secret_key
-MONGODB_URI=your_mongodb_connection_string
+# Database and Better Auth (use the same database as the server)
+MONGODB_URI=
 DB_NAME=equipment_rental
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=http://localhost:3000
 
-# Social OAuth Providers (Optional / Production)
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-GITHUB_CLIENT_ID=your_github_client_id
-GITHUB_CLIENT_SECRET=your_github_client_secret
+# Social login
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
 
-# Third-Party Services
-NEXT_PUBLIC_IMGBB_API_KEY=your_imgbb_api_key
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+# Image upload (imgbb)
+IMGBB_API_KEY=
+```
+
+Then start the app:
+
+```bash
+npm run dev      # development at http://localhost:3000
+npm run build    # production build
+npm run start    # run the production build
+```
+
+**Social login callback URLs:** `http://localhost:3000/api/auth/callback/google` and `http://localhost:3000/api/auth/callback/github`.
+
+### Try a payment
+
+Payments run in Stripe **test mode**. Use the card `4242 4242 4242 4242`, any future expiry date, any 3-digit CVC and any ZIP.
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+├── app/            # Pages (App Router): home, equipment, auth, dashboard, payment, API routes
+├── components/     # Layout, home sections, equipment, dashboard and UI components
+├── lib/            # Auth setup, API helper, formatters, pricing and validators
+└── types/          # TypeScript types
+proxy.ts            # Route protection by login and role
 ```
 
 ---
 
-## Getting Started Locally
+## ☁️ Deployment
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/akashonline24hour/equipment-rental-client.git
-   cd equipment-rental-client
-   ```
+Deployed on **Vercel**. Set the same environment variables in the project settings, with production values:
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+- `BETTER_AUTH_URL` and `NEXT_PUBLIC_APP_URL` are the live client address.
+- `NEXT_PUBLIC_API_URL` is the live server address followed by `/api`.
+- Add the production callback addresses to the Google and GitHub OAuth apps.
 
-3. **Set up environment variables:**
-   Copy `.env.example` (or create `.env.local`) and fill in the required keys listed above.
+The server's `AUTH_URL` must be exactly the same address as `BETTER_AUTH_URL`.
 
-4. **Run the development server:**
-   ```bash
-   npm run dev
-   ```
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
+---
+
+## 👨‍💻 Author
+
+Built by [akashonline24hour](https://github.com/akashonline24hour).
