@@ -3,12 +3,23 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
-import { LayoutDashboard, LogOut, Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { LayoutDashboard, LogOut, Menu, Moon, Sun, X } from "lucide-react";
 import { toast } from "react-toastify";
 import { authClient } from "@/lib/auth-client";
 import { NAV_LINKS, SITE_NAME } from "@/lib/constants";
 import UserAvatar from "@/components/layout/UserAvatar";
+
+type ThemeMode = "rentgear" | "rentgear-dark";
+
+function getInitialTheme(): ThemeMode {
+  if (typeof window === "undefined") return "rentgear";
+  const saved = localStorage.getItem("rentgear-theme");
+  if (saved === "rentgear" || saved === "rentgear-dark") return saved;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "rentgear-dark"
+    : "rentgear";
+}
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -18,6 +29,17 @@ export default function Navbar() {
 
   const [open, setOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
+  const [theme, setTheme] = useState<ThemeMode>(getInitialTheme);
+
+  // Sync React theme state to external DOM & localStorage (no setState inside effect)
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("rentgear-theme", theme);
+  }, [theme]);
+
+  function toggleTheme() {
+    setTheme((prev) => (prev === "rentgear" ? "rentgear-dark" : "rentgear"));
+  }
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -87,6 +109,16 @@ export default function Navbar() {
 
         {/* Desktop auth area */}
         <div className="hidden items-center gap-2 lg:flex">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === "rentgear" ? "dark" : "light"} mode`}
+            title={`Switch to ${theme === "rentgear" ? "dark" : "light"} mode`}
+            className="btn btn-ghost btn-square btn-sm"
+          >
+            {theme === "rentgear" ? <Moon size={18} /> : <Sun size={18} />}
+          </button>
+
           {isPending ? (
             <div className="skeleton h-9 w-44 rounded-lg" />
           ) : user ? (
@@ -124,16 +156,28 @@ export default function Navbar() {
         </div>
 
         {/* Mobile menu button */}
-        <button
-          type="button"
-          className="btn btn-ghost btn-square lg:hidden"
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          onClick={() => setOpen((value) => !value)}
-        >
-          {open ? <X size={22} /> : <Menu size={22} />}
-        </button>
+        <div className="flex items-center gap-1 lg:hidden">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === "rentgear" ? "dark" : "light"} mode`}
+            title={`Switch to ${theme === "rentgear" ? "dark" : "light"} mode`}
+            className="btn btn-ghost btn-square btn-sm"
+          >
+            {theme === "rentgear" ? <Moon size={18} /> : <Sun size={18} />}
+          </button>
+
+          <button
+            type="button"
+            className="btn btn-ghost btn-square"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            onClick={() => setOpen((value) => !value)}
+          >
+            {open ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile menu */}

@@ -18,13 +18,13 @@ const SOCIALS = [
 ];
 
 const linkClass =
-  "text-sm text-neutral-content/70 transition-colors hover:text-primary";
+  "text-sm text-base-content/75 transition-colors hover:text-primary";
 const headingClass =
-  "mb-4 text-sm font-bold uppercase tracking-wider text-neutral-content";
+  "mb-4 text-sm font-bold uppercase tracking-wider text-base-content";
 
 export default function Footer() {
   return (
-    <footer className="bg-neutral text-neutral-content">
+    <footer className="border-t border-base-300 bg-base-200 text-base-content transition-colors">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
@@ -41,7 +41,7 @@ export default function Footer() {
                 {SITE_NAME}
               </span>
             </Link>
-            <p className="max-w-xs text-sm leading-relaxed text-neutral-content/70">
+            <p className="max-w-xs text-sm leading-relaxed text-base-content/75">
               {SITE_TAGLINE} A trusted marketplace connecting equipment owners
               with customers.
             </p>
@@ -54,7 +54,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   aria-label={label}
                   title={label}
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-content/20 text-neutral-content/80 transition-colors hover:border-primary hover:bg-primary hover:text-primary-content"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-base-300 bg-base-100 text-base-content/80 transition-colors hover:border-primary hover:bg-primary hover:text-primary-content"
                 >
                   <Icon size={15} />
                 </a>
@@ -96,7 +96,7 @@ export default function Footer() {
           {/* Contact */}
           <div>
             <h3 className={headingClass}>Contact</h3>
-            <ul className="space-y-3 text-sm text-neutral-content/70">
+            <ul className="space-y-3 text-sm text-base-content/75">
               <li className="flex items-start gap-2.5">
                 <MapPin size={16} className="mt-0.5 shrink-0 text-primary" />
                 <span>{CONTACT.address}</span>
@@ -123,7 +123,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-neutral-content/15 pt-6 text-xs text-neutral-content/60 sm:flex-row">
+        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-base-300 pt-6 text-xs text-base-content/65 sm:flex-row">
           <p>
             © {new Date().getFullYear()} {SITE_NAME}. All rights reserved.
           </p>
